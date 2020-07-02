@@ -1,0 +1,10 @@
+import yaml
+
+
+file =  open('config/model1.yaml', 'r') 
+    
+yamldict = yaml.load(file)
+
+f.close()
+print(type(yamldict))
+print(yamldict)
