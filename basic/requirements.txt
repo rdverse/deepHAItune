@@ -1,0 +1,12 @@
+tensorflow-gpu
+numpy
+pandas
+scikit-learn
+math
+re
+os
+IPython
+tensorflow-gpu
+
+
+                                                                                                 

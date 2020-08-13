@@ -1,3 +1,9 @@
 yaml
 pandas
+numpy
 scikit-learn
+tensorflow-gpu
+pydot
+graphviz
+IPython
+keras
