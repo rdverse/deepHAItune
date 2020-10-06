@@ -1,6 +1,15 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 from keras import backend as k
+import os
+
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    # Invalid device or cannot modify virtual devices once initialized.
+    print('Could not initialize the tensorflow gpu')
+    pass
 
 
 def R_Square(y_true, y_pred):
@@ -101,6 +110,7 @@ def build_model_CNN(hp):
                   metrics=['mae', 'mape', R_Square])
 
     tf.keras.utils.plot_model(model,
-                              to_file='/home/devesh/Pictures/Model.png',
+                              to_file='/home/{}/Pictures/Model.png'.format(
+                                  os.environ.get('USER')),
                               show_shapes=True)
     return model

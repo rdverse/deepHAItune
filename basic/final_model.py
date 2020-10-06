@@ -5,9 +5,17 @@ import IPython
 import Data
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-import kerastuner as kt
+
 import model
 from model import build_model_CNN
+
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    # Invalid device or cannot modify virtual devices once initialized.
+    print('Could not initialize the tensorflow gpu')
+    pass
 
 
 def R_Square(y_true, y_pred):
@@ -18,7 +26,7 @@ def R_Square(y_true, y_pred):
     return R
 
 
-def build_model_CNN(hp):
+def build_model_CNN():
     inputA = layers.Input(shape=(3, 150, 1))
     modelA = inputA
     min_conv1 = 27
@@ -35,8 +43,8 @@ def build_model_CNN(hp):
                            padding='same',
                            activation='relu')(modelA)
 
-    modelA = layers.Flatten()(modelA)
-
+    #modelA = layers.Flatten()(modelA)
+    modelA = layers.GlobalMaxPool2D()(modelA)
     inputG = layers.Input(shape=(3, 150, 1))
 
     modelG = inputG
@@ -49,20 +57,20 @@ def build_model_CNN(hp):
                            padding='same',
                            activation='relu')(modelG)
     # model = layers.Dropout(0.4)(model)
-    modelG = layers.Flatten()(modelG)
-
+    #modelG = layers.Flatten()(modelG)
+    modelG = layers.GlobalMaxPool2D()(modelG)
     model = layers.Concatenate()([modelA, modelG])
     #   layers.concatenate(modelA,modelG)
 
-    model = layers.Dropout(0.4)(model)
+    #model = layers.Dropout(0.4)(model)
 
-    model = layers.Dense(120, activation='relu')(model)
+    model = layers.Dense(180, activation='relu')(model)
 
-    model = layers.Dropout(0.4)(model)
+    model = layers.Dropout(0.5)(model)
 
     model = layers.Dense(30, activation='relu')(model)
 
-    model = layers.Dropout(0.4)(model)
+    model = layers.Dropout(0.5)(model)
 
     output = layers.Dense(1)(model)
 
@@ -109,13 +117,13 @@ class ClearTrainingOutput(tf.keras.callbacks.Callback):
 
 model = build_model_CNN()
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=50)
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)
 
 model.fit([Features_TrainA, Features_TrainG],
           Labels_TrainA,
           validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-          epochs=200,
-          verbose=3,
+          epochs=1000,
+          verbose=1,
           callbacks=[callback, ClearTrainingOutput()])
 
 print("Results of the model training")

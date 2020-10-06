@@ -1,4 +1,4 @@
-name: /home/devesh/Code/Intensity-of-Human-Activities/tune/deepHAItune/env
+name: pyHAI
 channels:
   - anaconda
   - defaults
@@ -130,5 +130,5 @@ dependencies:
     - tabulate==0.8.7
     - terminaltables==3.1.0
     - tqdm==4.47.0
-prefix: /home/devesh/Code/Intensity-of-Human-Activities/tune/deepHAItune/env
+prefix: pyHAI
 
