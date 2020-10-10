@@ -1,9 +1,19 @@
+import shutil
 import Data
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 import kerastuner as kt
 import model
 from model import build_model_CNN
+import pdb
+import os
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    # Invalid device or cannot modify virtual devices once initialized.
+    print('Could not initialize the tensorflow gpu')
+    pass
 
 data_attr = [150, 50]
 Features_TrainA, Labels_TrainA, Features_TestA, Labels_TestA = Data.dataset_main(
@@ -39,35 +49,52 @@ import IPython
 
 class ClearTrainingOutput(tf.keras.callbacks.Callback):
     def on_train_end(*args, **kwargs):
+
         IPython.display.clear_output(wait=True)
 
 
-tuner = kt.BayesianOptimization(
-    build_model_CNN,
-    objective='val_mae',
-    #    max_epochs=333,
-    max_trials=500,
-    overwrite=True
-    #min_epochs = 10,
-    #hyperband_iterations=1,
-)
+from kerastuner import HyperParameters
+hp = HyperParameters()
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=50)
+tuner = kt.Hyperband(build_model_CNN,
+                     objective='val_mae',
+                     max_epochs=50,
+                     factor=4,
+                     hyperband_iterations=1,
+                     seed=20,
+                     tune_new_entries=True,
+                     allow_new_entries=True)
+
+print(tuner.search_space_summary())
+
 tuner.search([Features_TrainA, Features_TrainG],
              Labels_TrainA,
              validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-             epochs=500,
              verbose=3,
-             callbacks=[callback, ClearTrainingOutput()])
+             callbacks=[ClearTrainingOutput()])
 
 best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-
 model = tuner.hypermodel.build(best_hps)
+
+folPath = 'logdir_CNN_hp'
+
+if os.path.isdir(folPath):
+    shutil.rmtree(folPath)
+else:
+    os.mkdir(folPath)
+
+logdir = folPath
+
+tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
+
 model.fit([Features_TrainA, Features_TrainG],
           Labels_TrainA,
-          epochs=300,
+          epochs=100,
           validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-          callbacks=[callback],
-          verbose=1)
+          callbacks=[tensorboard_callback,
+                     ClearTrainingOutput()],
+          verbose=3)
 
+print("Found The Best Model")
+print(best_hps)
 print(model.evaluate([Features_TestA, Features_TestG], Labels_TestA))

@@ -9,6 +9,10 @@ from sklearn.model_selection import train_test_split
 import model
 from model import build_model_CNN
 
+from plotter import hist_plotter
+
+import os
+
 physical_devices = tf.config.list_physical_devices('GPU')
 try:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -48,14 +52,17 @@ def build_model_CNN():
     inputG = layers.Input(shape=(3, 150, 1))
 
     modelG = inputG
+
     modelG = layers.Conv2D(27,
                            kernel_size=(3, 3),
                            padding='same',
                            activation='relu')(inputG)
+
     modelG = layers.Conv2D(45,
                            kernel_size=(3, 3),
                            padding='same',
                            activation='relu')(modelG)
+
     # model = layers.Dropout(0.4)(model)
     #modelG = layers.Flatten()(modelG)
     modelG = layers.GlobalMaxPool2D()(modelG)
@@ -77,10 +84,19 @@ def build_model_CNN():
     model = tf.keras.Model(inputs=[inputA, inputG], outputs=output)
 
     optimizer = tf.keras.optimizers.RMSprop(1e-3)
+    # optimizer = tf.keras.optimizers.Adam(1e-3)
 
-    model.compile(loss='mean_absolute_error',
-                  optimizer=optimizer,
-                  metrics=['mae', 'mape', R_Square])
+    loss = tf.keras.losses.Huber()
+    loss = tf.keras.losses.LogCosh()
+    loss = tf.keras.losses.MeanAbsolutePercentageError()
+    loss = tf.keras.losses.MeanSquaredError(reduction="auto",
+                                            name="mean_squared_error")
+    loss = tf.keras.losses.MeanAbsoluteError(reduction="auto",
+                                             name="mean_absolute_error")
+    model.compile(
+        loss=loss,  #'mean_absolute_error',
+        optimizer=optimizer,
+        metrics=['mae', 'mape', R_Square])
 
     tf.keras.utils.plot_model(model,
                               to_file='/home/redev/Pictures/Model.png',
@@ -117,14 +133,34 @@ class ClearTrainingOutput(tf.keras.callbacks.Callback):
 
 model = build_model_CNN()
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)
+earlystopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                 patience=50)
 
-model.fit([Features_TrainA, Features_TrainG],
-          Labels_TrainA,
-          validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-          epochs=1000,
-          verbose=1,
-          callbacks=[callback, ClearTrainingOutput()])
+reduceLRplateau = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss',
+                                                       min_lr=1e-6,
+                                                       patience=10,
+                                                       factor=0.9,
+                                                       verbose=1)
+
+if os.path.isdir('logdir'):
+    pass
+else:
+    os.mkdir('logdir')
+
+logdir = 'logdir'
+tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
+
+hist = model.fit([Features_TrainA, Features_TrainG],
+                 Labels_TrainA,
+                 validation_data=([Features_ValA, Features_ValG], Labels_ValA),
+                 epochs=1000,
+                 verbose=3,
+                 callbacks=[
+                     earlystopping, reduceLRplateau, tensorboard_callback,
+                     ClearTrainingOutput()
+                 ])
+
+hist_plotter(hist.history)
 
 print("Results of the model training")
 print(model.evaluate([Features_TestA, Features_TestG], Labels_TestA))
