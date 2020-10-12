@@ -3,7 +3,10 @@ Cardio_Data
 __pycache__
 basic/__pycache__
 basic/untitled_project
+basic/logdir
 env
+
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

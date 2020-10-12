@@ -21,7 +21,7 @@ except:
     print('Could not initialize the tensorflow gpu')
     pass
 
-data_attr = [150, 0]
+data_attr = [150, 50]
 
 
 def R_Square(y_true, y_pred):
@@ -59,7 +59,7 @@ def build_model_CNN():
     modelA = layers.Conv1D(
         fil,
         kernel_size=ksize,
-        padding='valid',
+        padding='same',
         #activation='relu',
         name='conv1D_A1',
         use_bias=use_bias,
@@ -68,6 +68,8 @@ def build_model_CNN():
     modelA = layers.BatchNormalization()(modelA)
     #modelA = layers.Activation('relu')(modelA)
     modelA = layers.LeakyReLU()(modelA)
+
+    modelA_copy = modelA
 
     modelA = layers.Conv1D(
         fil,
@@ -80,11 +82,11 @@ def build_model_CNN():
 
     modelA = layers.BatchNormalization()(modelA)
     #    modelA = layers.Add()([modelA, inputA])
-    modelA = layers.Activation('relu')(modelA)
 
-    modelA_copy = modelA
+    #modelA = layers.Activation('relu')(modelA)
+    modelA = layers.LeakyReLU()(modelA)
 
-    modelA = layers.GlobalMaxPool1D()(modelA)
+    #    modelA = layers.GlobalMaxPool1D()(modelA)
     modelA = layers.Add()([modelA_copy, modelA])
     #modelA = layers.Activation('relu')(modelA)
     modelA = layers.LeakyReLU()(modelA)
@@ -97,7 +99,7 @@ def build_model_CNN():
     modelG = layers.Conv1D(
         fil,
         kernel_size=ksize,
-        padding='valid',
+        padding='same',
         #                       activation='relu',
         name='conv1D_G1',
         use_bias=use_bias,
@@ -120,9 +122,11 @@ def build_model_CNN():
         kernel_initializer=kernel_initializer)(modelG)
 
     modelG = layers.BatchNormalization()(modelG)
-    modelG = layers.Add()([modelG_copy, modelG])
-    #modelG = layers.Activation('relu')(modelG)
     modelG = layers.LeakyReLU()(modelG)
+
+    modelG = layers.Add()([modelG_copy, modelG])
+
+    #modelG = layers.Activation('relu')(modelG)
     modelG = layers.GlobalMaxPool1D()(modelG)
 
     model = layers.Concatenate()([modelA, modelG])
@@ -130,21 +134,23 @@ def build_model_CNN():
     #    model = modelG
 
     #   layers.concatenate(modelA,modelG)
+    print(k.int_shape(model))
 
     #model = layers.Dropout(0.4)(model)
+    model = layers.Reshape((90, 1))(model)
 
-    model = layers.LSTM(90,
-                        input_shape=(90, 1),
-                        return_sequences=True,
-                        activation='relu')(model)
+    model = layers.LSTM(
+        90,
+        #input_shape=(90, 1),
+        return_sequences=True,
+        activation='relu')(model)
 
-    model = layers.Dropout()(model)
+    # model = layers.Dropout(0.4)(model)
 
-    model = layers.Reshape((1, 90, 1))(model)
-    model = layers.LSTM(45,
-                        input_shape=(90, 1),
-                        return_sequences=True,
-                        activation='relu')(model)
+    #model = layers.Reshape((90, 1))(model)
+    model = layers.LSTM(90, return_sequences=True, activation='relu')(model)
+
+    model = layers.Dropout(0.4)(model)
 
     model = layers.Dense(180,
                          activation='relu',
@@ -178,7 +184,7 @@ def build_model_CNN():
         metrics=['mae', 'mape', R_Square])
 
     tf.keras.utils.plot_model(model,
-                              to_file='/home/redev/Pictures/Model.png',
+                              to_file='/home/devesh/Pictures/Model.png',
                               show_shapes=True)
     return model
 
@@ -229,7 +235,7 @@ reduceLRplateau = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss',
                                                        min_lr=1e-6,
                                                        patience=15,
                                                        factor=0.9,
-                                                       verbose=1)
+                                                       verbose=3)
 
 if os.path.isdir('logdir'):
     pass
@@ -239,15 +245,18 @@ else:
 logdir = 'logdir'
 tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
 
-hist = model.fit([Features_TrainA, Features_TrainG],
-                 Labels_TrainA,
-                 validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-                 epochs=500,
-                 verbose=3,
-                 callbacks=[
-                     earlystopping, reduceLRplateau, tensorboard_callback,
-                     ClearTrainingOutput()
-                 ])
+hist = model.fit(
+    [Features_TrainA, Features_TrainG],
+    Labels_TrainA,
+    validation_data=([Features_ValA, Features_ValG], Labels_ValA),
+    epochs=2000,
+  #  verbose=0,
+    callbacks=[
+        #     earlystopping,
+        #        reduceLRplateau,
+        tensorboard_callback,
+        #          ClearTrainingOutput()
+    ])
 
 hist_plotter(hist.history)
 
