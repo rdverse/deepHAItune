@@ -28,7 +28,7 @@ class layerzoo:
         return(buildLayer(config))
     
     
-    def Dense(self, config, prev = model, hp = hp):
+    def Dense(self, config, prev, hp = hp):
         
         if config['tune']:
             layer = layers.Dense(min_value = config['units_min'],\
@@ -41,7 +41,7 @@ class layerzoo:
         return(layer)
     
     
-    def Conv2D(self, prev, config,hp =None):
+    def Conv2D(self, prev, config,hp):
         
         if config['tune']:
             layer = layers.Conv2D(filters = config['filters'],\
@@ -78,7 +78,7 @@ def build_model(hp):
 
     output = layers.Dense(1, activation='relu')(model)
 
-    model = tf.keras.Model(inputs = input, o outputs = output)
+    model = tf.keras.Model(inputs = input, outputs = output)
     optimizer = tf.keras.optimizers.RMSprop(0.001)
     model.compile(optimizer = optimizer,\
                                    loss='mean_absolute_error',\
@@ -89,7 +89,3 @@ def build_model(hp):
     
 
 
-
-
-def build_and_tune_model():
-             
