@@ -46,12 +46,12 @@ def reshaping(array):
 def build_model_CNN():
     inputA = layers.Input(shape=(data_attr[0], 3))
     modelA = inputA
-    min_conv1 = 27
+    min_conv1 = 36
     max_conv1 = 36
     min_conv2 = 36
-    max_conv2 = 45
+    max_conv2 = 36
     fil = 45
-    ksize = 5
+    ksize = 6
     pad = ''
     use_bias = True
     kernel_initializer = 'glorot_normal'
@@ -133,19 +133,8 @@ def build_model_CNN():
 
     #model = layers.Dropout(0.4)(model)
 
-    model = layers.LSTM(90,
-                        input_shape=(90, 1),
-                        return_sequences=True,
-                        activation='relu')(model)
-
-    model = layers.Dropout()(model)
-
-    model = layers.LSTM(45,
-                        input_shape=(90, 1),
-                        return_sequences=True,
-                        activation='relu')(model)
-
-    model = layers.Dense(180,
+    
+    model = layers.Dense(150,
                          activation='relu',
                          kernel_initializer='he_uniform')(model)
 

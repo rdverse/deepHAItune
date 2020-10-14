@@ -21,7 +21,7 @@ except:
     print('Could not initialize the tensorflow gpu')
     pass
 
-data_attr = [100, 25]
+data_attr = [150, 0]
 
 
 def R_Square(y_true, y_pred):

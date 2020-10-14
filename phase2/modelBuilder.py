@@ -28,7 +28,7 @@ class layerzoo:
         return(buildLayer(config))
     
     
-    def Dense(self, config, prev, hp = hp):
+    def Dense(self, config, prev = model, hp = hp):
         
         if config['tune']:
             layer = layers.Dense(min_value = config['units_min'],\
@@ -41,7 +41,7 @@ class layerzoo:
         return(layer)
     
     
-    def Conv2D(self, prev, config,hp):
+    def Conv2D(self, prev, config,hp =None):
         
         if config['tune']:
             layer = layers.Conv2D(filters = config['filters'],\
@@ -89,3 +89,7 @@ def build_model(hp):
     
 
 
+
+
+def build_and_tune_model():
+             
