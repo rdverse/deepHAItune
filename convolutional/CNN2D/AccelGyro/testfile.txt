@@ -1,0 +1,8 @@
+ {'num_layers_A': 2, 'layer0_CNN_A': 36, 'num_BN': 1, 'num_layers_G': 2, 'layer0_CNN_G': 9, 'num_layers': 1, 'learning_rate': 0.001, 'layer1_CNN_A': 27, 'layer1_CNN_G': 9, 'hidden_size_0': 150, 'hidden_size_1': 60, 'tuner/epochs': 200, 'tune
+
+
+
+[0.24845212697982788, 0.24845212697982788, 5.3599066734313965, 0.9004995822906494]
+
+
+
