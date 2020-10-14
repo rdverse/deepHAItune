@@ -10,7 +10,16 @@ import os
 from plotter import hist_plotter
 from kerastuner import HyperParameters
 
-data_attr = [50, 0]
+data_attr = [50, 50]
+
+folPath = 'logdir_CNN_hp'
+
+if os.path.isdir(folPath):
+    shutil.rmtree(folPath)
+else:
+    os.mkdir(folPath)
+
+logdir = folPath
 
 
 def reshaping(array):
@@ -79,21 +88,24 @@ class ClearTrainingOutput(tf.keras.callbacks.Callback):
 
 hp = HyperParameters()
 
-folPath = 'logdir_CNN_hp'
-
-if os.path.isdir(folPath):
-    shutil.rmtree(folPath)
-else:
-    os.mkdir(folPath)
-
-logdir = folPath
+#os.system("load_ext tensorboard")
+#os.system("tensorboard --logdir {}".format(logdir))
 
 tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
 
+earlystopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                 patience=50)
+
+reduceLRplateau = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss',
+                                                       min_lr=1e-6,
+                                                       patience=25,
+                                                       factor=0.9,
+                                                       verbose=1)
+
 tuner = kt.Hyperband(build_model_CNN,
                      objective='val_mae',
-                     max_epochs=50,
-                     factor=5,
+                     max_epochs=200,
+                     factor=2,
                      hyperband_iterations=1,
                      seed=20,
                      tune_new_entries=True,
@@ -101,24 +113,33 @@ tuner = kt.Hyperband(build_model_CNN,
 
 print(tuner.search_space_summary())
 
-tuner.search([Features_TrainA, Features_TrainG],
-             Labels_TrainA,
-             validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-             verbose=3,
-             callbacks=[tensorboard_callback,
-                        ClearTrainingOutput()])
+tuner.search(
+    [Features_TrainA, Features_TrainG],
+    Labels_TrainA,
+    validation_data=([Features_ValA, Features_ValG], Labels_ValA),
+    verbose=3,
+    callbacks=[
+        #tensorboard_callback,
+        earlystopping,
+        reduceLRplateau,
+        ClearTrainingOutput()
+    ])
 
 best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+
 model = tuner.hypermodel.build(best_hps)
+
 hist = model.fit([Features_TrainA, Features_TrainG],
                  Labels_TrainA,
-                 epochs=200,
+                 epochs=500,
                  validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-                 callbacks=[tensorboard_callback,
-                            ClearTrainingOutput()],
+                 callbacks=[
+                     tensorboard_callback, earlystopping, reduceLRplateau,
+                     ClearTrainingOutput()
+                 ],
                  verbose=3)
 
 print("Found The Best Model")
 print(model.evaluate([Features_TestA, Features_TestG], Labels_TestA))
-print(best_hps)
+print(model.summary())
 hist_plotter(hist.history)
