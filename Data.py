@@ -88,12 +88,18 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
         print('Gyro')
         attriutes = ['Gyro_X_CAL', 'Gyro_Y_CAL', 'Gyro_Z_CAL']
 
-    instances = int(
-        math.floor(
-            (1535 - Frame_size) / (Frame_size * (1 - overlap_percent / 100))))
-    print(instances)
+    print('new Data')
     PATH = 'Cardio_Data/Cleaned_data'
     profiles = os.listdir(PATH)
+
+    samplePath = PATH + '/' + profiles[0]
+    samplePath = samplePath + '/' + os.listdir(samplePath)[0]
+    dataLen = len(pd.read_csv(samplePath))
+
+    instances = int(
+        math.floor((dataLen - Frame_size) / (Frame_size *
+                                             (1 - overlap_percent / 100))))
+    print(instances)
 
     for profile in profiles:
         speeds = os.listdir(PATH + '/' + profile)
@@ -105,7 +111,6 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
 
             #Read the csv file using pandas
             df = pd.read_csv(PATH + '/' + profile + '/' + speed)
-
             #Get label for this speed
             Label = float(re.sub('\.csv$', '', speed))
 
