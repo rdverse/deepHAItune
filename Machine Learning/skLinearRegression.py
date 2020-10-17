@@ -24,6 +24,6 @@ class skLinearRegression():
             'pca__n_components': self.hp.hyper['pca__n_components'],
         }
 
-        grid = GridSearchCV(pipe, param_grid, n_jobs=-1)
+        grid = GridSearchCV(pipe, param_grid, verbose=3, n_jobs=-1)
 
         return grid
