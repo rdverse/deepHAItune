@@ -24,8 +24,18 @@ class Evaluator():
         self.model = None
         self.preds = None
 
+        self.__check_files()
+
+    def __check_files(self):
+        PATH = 'Results/' + self.algoName + '.csv'
+
+        if not os.path.isdir('Results'):
+            os.mkdir('Results')
+
+        if os.path.exists(PATH):
+            os.remove(PATH)
+
     def train_model(self):
-        print(self.X_Train.shape, self.y_Train.shape)
         self.model = self.grid.fit(self.X_Train, self.y_Train)
         self.preds = self.model.predict(self.X_Test)
 
