@@ -90,7 +90,7 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
 
     instances = int(
         math.floor(
-            (1535 - Frame_size) / (Frame_size * (1 - overlap_percent / 100))))
+            (2044 - Frame_size) / (Frame_size * (1 - overlap_percent / 100))))
     print(instances)
     PATH = 'Cardio_Data/Cleaned_data'
     profiles = os.listdir(PATH)

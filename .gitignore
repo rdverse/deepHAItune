@@ -5,7 +5,12 @@ basic/__pycache__
 basic/untitled_project
 basic/logdir
 env
-
+*logdir
+logdir
+/Cardio_Data
+*Cardio_Data
+*/Cardio_Data
+*/logdir
 
 *~
 
