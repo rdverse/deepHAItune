@@ -17,9 +17,9 @@ class Evaluator():
         self.grid = grid
         self.configData = configData
         self.X_Train = confData[0]
-        self.y_Train = confData[1]
+        self.y_Train = confData[1].ravel()
         self.X_Test = confData[2]
-        self.y_Test = confData[3]
+        self.y_Test = confData[3].ravel()
 
         self.model = None
         self.preds = None
@@ -32,8 +32,8 @@ class Evaluator():
         if not os.path.isdir('Results'):
             os.mkdir('Results')
 
-        if os.path.exists(PATH):
-            os.remove(PATH)
+        # if os.path.exists(PATH):
+        #     os.remove(PATH)
 
     def train_model(self):
         self.model = self.grid.fit(self.X_Train, self.y_Train)
@@ -57,10 +57,10 @@ class Evaluator():
     def store(self):
 
         PATH = 'Results/' + self.algoName + '.csv'
-
+        print(PATH)
         if not os.path.exists(PATH):
-
             with open(PATH, 'w') as csvFile:
+                print('writing csv file')
                 csvWriter = csv.writer(csvFile)
                 columns = [
                     'algoName', 'Frame', 'hyperparameters', 'configData',
@@ -69,7 +69,7 @@ class Evaluator():
                 csvWriter.writerow(columns)
 
         mae, mape, r2 = self._results()
-
+        print(self._results())
         ##Save list
         save_list = [
             self.algoName,

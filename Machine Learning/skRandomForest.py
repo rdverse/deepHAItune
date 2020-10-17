@@ -1,5 +1,4 @@
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LinearRegression
 from sklearn.decomposition import PCA
 from hyperparameters import hpts
 from sklearn.model_selection import GridSearchCV
@@ -9,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 
 class skRandomForest():
     model = None
+    name = 'RandomForest'
 
     def __init__(self):
         self.name = 'RandomForest'
@@ -32,6 +32,6 @@ class skRandomForest():
             'rf__n_estimators': self.hyper['rf__n_estimators']
         }
 
-        grid = GridSearchCV(pipe, param_grid, verbose=3, n_jobs=-1)
+        grid = GridSearchCV(pipe, param_grid, verbose=3, n_jobs=-1, cv=3)
 
         return grid
