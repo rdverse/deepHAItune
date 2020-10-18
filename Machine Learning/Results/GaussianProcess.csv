@@ -1,0 +1,22 @@
+algoName,Frame,hyperparameters,configData,mae,mape,r2
+GaussianProcess,data1,"{'gp__n_restarts_optimizer': 0, 'pca__n_components': 25}",conf1,0.7345583479481194,0.7345583479481194,0.30482513158193747
+GaussianProcess,data1,"{'gp__n_restarts_optimizer': 2, 'pca__n_components': 25}",conf2,0.8870714442863661,0.8870714442863661,0.058628282776496676
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 0},conf1,0.7509185810371432,0.7509185810371432,0.26472587210918397
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 0},conf1,0.7509185810371432,0.7509185810371432,0.26472587210918397
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 0},conf2,0.8330717858500143,0.8330717858500143,0.12683304075422153
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 0},conf3,0.7256538624012562,0.7256538624012562,0.37456344981478285
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 2},conf4,0.8031785821887173,0.8031785821887173,0.20573891046775405
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 0},conf5,0.734303617242939,0.734303617242939,0.25793277517326907
+GaussianProcess,data1,{'gp__n_restarts_optimizer': 0},conf6,0.726688074241526,0.726688074241526,0.3763526539866432
+GaussianProcess,data2,{'gp__n_restarts_optimizer': 0},conf1,0.8535967296220884,0.8535967296220884,0.08768595154180792
+GaussianProcess,data2,{'gp__n_restarts_optimizer': 0},conf2,0.8061305559673827,0.8061305559673827,0.15179661181416704
+GaussianProcess,data2,{'gp__n_restarts_optimizer': 0},conf3,0.7256538624012562,0.7256538624012562,0.37456344981478285
+GaussianProcess,data2,{'gp__n_restarts_optimizer': 2},conf4,0.8031785821887173,0.8031785821887173,0.20573891046775405
+GaussianProcess,data2,{'gp__n_restarts_optimizer': 0},conf5,0.8748668140001704,0.8748668140001704,-0.13377222184038806
+GaussianProcess,data2,{'gp__n_restarts_optimizer': 0},conf6,0.726688074241526,0.726688074241526,0.3763526539866432
+GaussianProcess,data3,{'gp__n_restarts_optimizer': 0},conf1,1.0399271733123958,1.0399271733123958,-0.7179947176430337
+GaussianProcess,data3,{'gp__n_restarts_optimizer': 0},conf2,0.947836864082573,0.947836864082573,-0.6017022273392345
+GaussianProcess,data3,{'gp__n_restarts_optimizer': 0},conf3,0.7256538624012562,0.7256538624012562,0.37456344981478285
+GaussianProcess,data3,{'gp__n_restarts_optimizer': 2},conf4,0.8031785821887173,0.8031785821887173,0.20573891046775405
+GaussianProcess,data3,{'gp__n_restarts_optimizer': 2},conf5,1.4234474469830136,1.4234474469830136,-2.9736502523606
+GaussianProcess,data3,{'gp__n_restarts_optimizer': 0},conf6,0.726688074241526,0.726688074241526,0.3763526539866432
