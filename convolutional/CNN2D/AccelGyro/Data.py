@@ -27,9 +27,9 @@ def dataset_main(Frame_size, overlap_percent, Accel):
     Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
         Features, Labels)
 
-    #scaler = StandardScaler()
-    #scaler.fit(Features_Train)
-    #Features = scaler.transform(Features)
+    scaler = StandardScaler()
+    scaler.fit(Features_Train)
+    Features = scaler.transform(Features)
 
     Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
         Features, Labels)

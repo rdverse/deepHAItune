@@ -1,0 +1,2 @@
+algoName,Frame,hyperparameters,configData,accuracy,split
+SVM,data1,"{'pca__n_components': 25, 'svm__C': 5, 'svm__gamma': 0.1, 'svm__kernel': 'rbf'}",conf1,0.9483537766300839

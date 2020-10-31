@@ -16,6 +16,8 @@ from sklearn.model_selection import train_test_split
 
 from StandardScaler import StandardScaler
 
+import pdb
+
 
 def dataset_main(Frame_size, overlap_percent, Accel):
     #Frame_size = int(input(" Enter the Frame Size for the dataset, range(50, 1500) : "))
@@ -83,15 +85,17 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
     count = 0
     if Accel == 'Yes':
         print('Accel')
-        attriutes = ['Accel_LN_X_CAL', 'Accel_LN_Y_CAL', 'Accel_LN_Z_CAL']
+        attributes = ['Accel_LN_X_CAL', 'Accel_LN_Y_CAL', 'Accel_LN_Z_CAL']
     else:
         print('Gyro')
-        attriutes = ['Gyro_X_CAL', 'Gyro_Y_CAL', 'Gyro_Z_CAL']
+        attributes = ['Gyro_X_CAL', 'Gyro_Y_CAL', 'Gyro_Z_CAL']
 
     instances = int(
         math.floor(
             (2044 - Frame_size) / (Frame_size * (1 - overlap_percent / 100))))
+
     print(instances)
+
     PATH = 'Cardio_Data/Cleaned_data'
     profiles = os.listdir(PATH)
 
@@ -115,11 +119,11 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
             for i in range(instances):
 
                 feat_x = np.array(
-                    df[attriutes[0]][start_index:end_index]).reshape(-1, 1)
+                    df[attributes[0]][start_index:end_index]).reshape(-1, 1)
                 feat_y = np.array(
-                    df[attriutes[1]][start_index:end_index]).reshape(-1, 1)
+                    df[attributes[1]][start_index:end_index]).reshape(-1, 1)
                 feat_z = np.array(
-                    df[attriutes[2]][start_index:end_index]).reshape(-1, 1)
+                    df[attributes[2]][start_index:end_index]).reshape(-1, 1)
 
                 start_index = end_index - int(
                     Frame_size * overlap_percent / 100)

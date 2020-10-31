@@ -2,16 +2,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.decomposition import PCA
 from hyperparameters import hpts
 from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
 
 
-class skRandomForest():
+class skSVM():
     model = None
-    name = 'RandomForest'
+    name = 'SupportVectorMachine'
 
     def __init__(self):
-        self.name = 'RandomForest'
+        self.name = 'SVM'
         self.hp = hpts()
         self.hyper = self.hp.hyper
         self.model = self.build_model()
@@ -20,20 +20,17 @@ class skRandomForest():
 
         scale = StandardScaler()
         pca = PCA()
-        rf = RandomForestRegressor(n_jobs=-1)
 
-        pipe = Pipeline([('scale', scale), ('pca', pca), ('rf', rf)])
+        svm = SVC(verbose=2, max_iter=3000)
+
+        pipe = Pipeline([('scale', scale), ('pca', pca), ('svm', svm)])
 
         param_grid = {
             'pca__n_components': self.hyper['pca__n_components'],
-            'rf__max_depth': self.hyper['rf__max_depth'],
-            'rf__min_samples_leaf': self.hyper['rf__min_samples_leaf'],
-            'rf__min_samples_split': self.hyper['rf__min_samples_split'],
-            'rf__n_estimators': self.hyper['rf__n_estimators']
+            'svm__C': self.hyper['svm__C'],
+            'svm__gamma': self.hyper['svm__gamma'],
+            'svm__kernel': self.hyper['svm__kernel']
         }
 
         grid = GridSearchCV(pipe, param_grid, verbose=3, n_jobs=-1, cv=3)
-
         return grid
-
-    #Visualize parameters and next important thing is feature importance of the algorithms.

@@ -71,13 +71,13 @@ def build_model_CNN():
 
     #model = layers.Dropout(0.4)(model)
 
-    model = layers.Dense(180, activation='relu')(model)
+    model = layers.Dense(120, activation='relu')(model)
 
-    model = layers.Dropout(0.5)(model)
+    model = layers.Dropout(0.4)(model)
 
     model = layers.Dense(30, activation='relu')(model)
 
-    model = layers.Dropout(0.5)(model)
+    model = layers.Dropout(0.4)(model)
 
     output = layers.Dense(1)(model)
 
@@ -91,8 +91,7 @@ def build_model_CNN():
     loss = tf.keras.losses.MeanAbsolutePercentageError()
     loss = tf.keras.losses.MeanSquaredError(reduction="auto",
                                             name="mean_squared_error")
-    loss = tf.keras.losses.MeanAbsoluteError(reduction="auto",
-                                             name="mean_absolute_error")
+    loss = tf.keras.losses.MeanAbsoluteError(name="mean_absolute_error")
     model.compile(
         loss=loss,  #'mean_absolute_error',
         optimizer=optimizer,
@@ -150,15 +149,18 @@ else:
 logdir = 'logdir'
 tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
 
-hist = model.fit([Features_TrainA, Features_TrainG],
-                 Labels_TrainA,
-                 validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-                 epochs=1000,
-                 verbose=3,
-                 callbacks=[
-                     earlystopping, reduceLRplateau, tensorboard_callback,
-                     ClearTrainingOutput()
-                 ])
+hist = model.fit(
+    [Features_TrainA, Features_TrainG],
+    Labels_TrainA,
+    validation_data=([Features_ValA, Features_ValG], Labels_ValA),
+    epochs=200,
+    verbose=3,
+    callbacks=[
+        #        earlystopping,
+        #reduceLRplateau,
+        tensorboard_callback,
+        ClearTrainingOutput()
+    ])
 
 hist_plotter(hist.history)
 

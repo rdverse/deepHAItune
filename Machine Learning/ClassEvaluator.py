@@ -1,4 +1,4 @@
-from sklearn.metrics import mean_absolute_error, r2_score
+from sklearn.metrics import accuracy_score
 import pandas as pd
 import csv
 import numpy as np
@@ -13,20 +13,27 @@ def mean_absolute_percentage_error(y_true, y_pred):
 
 
 class Evaluator():
-    def __init__(self, algoName, data_attr, grid, configData, confData):
+    def __init__(self, algoName, data_attr, grid, configData, confData, split):
         self.algoName = algoName
         self.data_attr = data_attr
         self.grid = grid
         self.configData = configData
+        self.split = split
+
         self.X_Train = confData[0]
-        self.y_Train = confData[1].ravel()
+        self.y_Train = self.__alter_labels(confData[1].ravel())
         self.X_Test = confData[2]
-        self.y_Test = confData[3].ravel()
+        self.y_Test = self.__alter_labels(confData[3].ravel())
 
         self.model = None
         self.preds = None
 
+        print('Shape of the input Data is {}'.format(self.X_Train.shape))
         self.__check_files()
+
+    def __alter_labels(self, labels):
+        labels = [0 if label <= self.split else 1 for label in labels]
+        return np.array(labels)
 
     def __check_files(self):
         PATH = 'Results/' + self.algoName + '.csv'
@@ -34,24 +41,13 @@ class Evaluator():
         if not os.path.isdir('Results'):
             os.mkdir('Results')
 
-        # if os.path.exists(PATH):
-        #     os.remove(PATH)
-
     def train_model(self):
         self.model = self.grid.fit(self.X_Train, self.y_Train)
         self.preds = self.model.predict(self.X_Test)
 
-    def evaluate(self):
-        mae = mean_absolute_error(self.y_Test, self.preds)
-        mape = mean_absolute_percentage_error(self.y_Test, self.preds)
-        r2 = r2_score(self.y_Test, self.preds)
-        self.results = [mae, mape, r2]
-
     def _results(self):
-        mae = mean_absolute_error(self.y_Test, self.preds)
-        mape = mean_absolute_percentage__error(self.y_Test, self.preds)
-        r2 = r2_score(self.y_Test, self.preds)
-        return mae, mape, r2
+        accuracy = accuracy_score(self.preds, self.y_Test)
+        return accuracy
 
     def _gethps(self):
         return (self.model.best_params_)
@@ -65,17 +61,17 @@ class Evaluator():
                 csvWriter = csv.writer(csvFile)
                 columns = [
                     'algoName', 'Frame', 'hyperparameters', 'configData',
-                    'mae', 'mape', 'r2'
+                    'accuracy', 'split'
                 ]
                 csvWriter.writerow(columns)
 
-        mae, mape, r2 = self._results()
+        accuracy = self._results()
         print(self._results())
         ##Save list
         save_list = [
             self.algoName,
             str(self.data_attr),
-            str(self._gethps()), self.configData, mae, mape, r2
+            str(self._gethps()), self.configData, accuracy, self.split
         ]
 
         with open(PATH, 'a') as csvFile:
