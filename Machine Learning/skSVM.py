@@ -21,7 +21,7 @@ class skSVM():
         scale = StandardScaler()
         pca = PCA()
 
-        svm = SVC(verbose=2, max_iter=3000)
+        svm = SVC(verbose=1, max_iter=3000)
 
         pipe = Pipeline([('scale', scale), ('pca', pca), ('svm', svm)])
 

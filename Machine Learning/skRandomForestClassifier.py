@@ -32,7 +32,7 @@ class skRandomForestClassifier():
             'rf__n_estimators': self.hyper['rf__n_estimators']
         }
 
-        grid = GridSearchCV(pipe, param_grid, verbose=3, n_jobs=-1, cv=3)
+        grid = GridSearchCV(pipe, param_grid, verbose=1, n_jobs=-1, cv=3)
 
         return grid
 
