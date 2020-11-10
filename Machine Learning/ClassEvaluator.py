@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 import pandas as pd
 import csv
 import numpy as np
@@ -47,7 +47,8 @@ class Evaluator():
 
     def _results(self):
         accuracy = accuracy_score(self.preds, self.y_Test)
-        return accuracy
+        f1 = f1_score(self.preds, self.y_Test)
+        return accuracy, f1
 
     def _gethps(self):
         return (self.model.best_params_)
@@ -61,17 +62,19 @@ class Evaluator():
                 csvWriter = csv.writer(csvFile)
                 columns = [
                     'algoName', 'Frame', 'hyperparameters', 'configData',
-                    'accuracy', 'split'
+                    'accuracy', 'f1_score', 'split'
                 ]
                 csvWriter.writerow(columns)
 
-        accuracy = self._results()
+        accuracy, f1 = self._results()
         print(self._results())
+
         ##Save list
         save_list = [
             self.algoName,
             str(self.data_attr),
-            str(self._gethps()), self.configData, accuracy, self.split
+            str(self._gethps()), self.configData, accuracy, f1_score,
+            self.split
         ]
 
         with open(PATH, 'a') as csvFile:

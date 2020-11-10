@@ -90,7 +90,7 @@ def Make_Dataset(Frame_size,
                 feat_x = np.array(
                     df[attriutes[0]][start_index:end_index]).reshape(-1, 1)
                 feat_y = np.array(
-                    df[attriutes[1]][start_index:end_index]).reshape(-1, 1)
+                            df[attriutes[1]][start_index:end_index]).reshape(-1, 1)
                 feat_z = np.array(
                     df[attriutes[2]][start_index:end_index]).reshape(-1, 1)
 

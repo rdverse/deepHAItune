@@ -3,12 +3,12 @@ from sklearn.decomposition import PCA
 from hyperparameters import hpts
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
 
 
-class skSVM():
+class skLogisticRegression():
     model = None
-    name = 'SupportVectorMachine'
+    name = 'LogisticRegression'
 
     def __init__(self, choice):
         self.name = 'SVM'
@@ -22,22 +22,22 @@ class skSVM():
         scale = StandardScaler()
         pca = PCA()
 
-        svm = SVC(verbose=1, max_iter=3000)
+        logreg = LogisticRegression(verbose=1, max_iter=3000)
 
         param_grid = {
-            'svm__C': self.hyper['svm__C'],
-            'svm__gamma': self.hyper['svm__gamma'],
-            'svm__kernel': self.hyper['svm__kernel']
+            'logreg__penalty': self.hyper['logreg__penalty'],
+            'logreg__solver': self.hyper['logreg__solver'],
         }
 
         if self.applyPCA:
             param_grid['pca__n_components'] = self.hyper['pca__n_components']
-            pipe = Pipeline([('scale', scale), ('pca', pca), ('svm', svm)])
+            pipe = Pipeline([('scale', scale), ('pca', pca),
+                             ('logreg', logreg)])
 
         else:
             print(self.applyPCA)
             print(type(self.applyPCA))
-            pipe = Pipeline([('scale', scale), ('svm', svm)])
+            pipe = Pipeline([('scale', scale), ('logreg', logreg)])
 
         grid = GridSearchCV(pipe, param_grid, verbose=3, n_jobs=-1, cv=3)
         return grid

@@ -1,2 +1,47 @@
 algoName,Frame,hyperparameters,configData,accuracy,split
-SVM,data1,"{'pca__n_components': 25, 'svm__C': 5, 'svm__gamma': 0.1, 'svm__kernel': 'rbf'}",conf1,0.9483537766300839
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9386701097482246,4
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9386701097482246,4
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9386701097482246,4
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.89541639767592,4.5
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9386701097482246,4
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9386701097482246,4
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9386701097482246,4
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.89541639767592,4.5
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.8676565526145901,5.5
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.854744996772111,5
+SVM,data1,"{'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.9270497094899935,6
+SVM,data1,"{'pca__n_components': 25, 'svm__C': 5, 'svm__gamma': 0.1, 'svm__kernel': 'rbf'}",conf1,0.9496449322143318,4
+SVM,data1,"{'pca__n_components': 25, 'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.8999354422207876,4.5
+SVM,data1,"{'pca__n_components': 25, 'svm__C': 5, 'svm__gamma': 0.1, 'svm__kernel': 'rbf'}",conf1,0.9489993544222078,4
+SVM,data1,"{'pca__n_components': 25, 'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.8992898644286637,4.5
+SVM,data1,"{'pca__n_components': 25, 'svm__C': 100, 'svm__gamma': 0.001, 'svm__kernel': 'rbf'}",conf1,0.8831504196255648,5.5
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 5}",conf1,0.8605551969012266,<function f1_score at 0x7ff323d0b400>,4
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf1,0.7824402840542285,<function f1_score at 0x7ff323d0b400>,4.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf1,0.7682375726275016,<function f1_score at 0x7ff323d0b400>,5.5
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 25}",conf1,0.6959328599096191,<function f1_score at 0x7ff323d0b400>,5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf1,0.8889606197546804,<function f1_score at 0x7ff323d0b400>,6
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'sag', 'pca__n_components': 25}",conf2,0.697224015493867,<function f1_score at 0x7ff323d0b400>,4
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf2,0.6223369916074887,<function f1_score at 0x7ff323d0b400>,4.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf2,0.7779212395093609,<function f1_score at 0x7ff323d0b400>,5.5
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'sag', 'pca__n_components': 25}",conf2,0.6404131697869593,<function f1_score at 0x7ff323d0b400>,5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf2,0.8889606197546804,<function f1_score at 0x7ff323d0b400>,6
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 25}",conf3,0.7407172326245637,<function f1_score at 0x7ff323d0b400>,4
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 25}",conf3,0.7194541415423675,<function f1_score at 0x7ff323d0b400>,4.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf3,0.8032370675975881,<function f1_score at 0x7ff323d0b400>,5.5
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 25}",conf3,0.7429387496033005,<function f1_score at 0x7ff323d0b400>,5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf3,0.8892415106315456,<function f1_score at 0x7ff323d0b400>,6
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'sag', 'pca__n_components': 25}",conf4,0.7207235798159315,<function f1_score at 0x7ff323d0b400>,4
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'lbfgs', 'pca__n_components': 25}",conf4,0.65915582354808,<function f1_score at 0x7ff323d0b400>,4.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf4,0.7819739765153919,<function f1_score at 0x7ff323d0b400>,5.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf4,0.6794668359251032,<function f1_score at 0x7ff323d0b400>,5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf4,0.900983814662012,<function f1_score at 0x7ff323d0b400>,6
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf5,0.8599096191091027,<function f1_score at 0x7ff323d0b400>,4
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 25}",conf5,0.7882504841833441,<function f1_score at 0x7ff323d0b400>,4.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf5,0.7701743060038735,<function f1_score at 0x7ff323d0b400>,5.5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf5,0.6985151710781149,<function f1_score at 0x7ff323d0b400>,5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf5,0.8889606197546804,<function f1_score at 0x7ff323d0b400>,6
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'lbfgs', 'pca__n_components': 25}",conf6,0.7403998730561726,<function f1_score at 0x7ff323d0b400>,4
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'saga', 'pca__n_components': 25}",conf6,0.7375436369406537,<function f1_score at 0x7ff323d0b400>,4.5
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'lbfgs', 'pca__n_components': 25}",conf6,0.8070453824182799,<function f1_score at 0x7ff323d0b400>,5.5
+SVM,data1,"{'logreg__penalty': 'l2', 'logreg__solver': 'newton-cg', 'pca__n_components': 25}",conf6,0.7537289749285941,<function f1_score at 0x7ff323d0b400>,5
+SVM,data1,"{'logreg__penalty': 'l1', 'logreg__solver': 'saga', 'pca__n_components': 5}",conf6,0.8987622976832752,<function f1_score at 0x7ff323d0b400>,6

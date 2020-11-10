@@ -1,0 +1,15 @@
+algoName,Frame,hyperparameters,configData,accuracy,split
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'ball_tree', 'kNNC__leaf_size': 25, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf1,0.9483537766300839,4
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'ball_tree', 'kNNC__leaf_size': 25, 'kNNC__n_neighbors': 20, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf1,0.8876694641704326,4.5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'brute', 'kNNC__leaf_size': 25, 'kNNC__n_neighbors': 10, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf1,0.8573273079406069,5.5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'kd_tree', 'kNNC__leaf_size': 5, 'kNNC__n_neighbors': 15, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf1,0.8224661071659135,5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'brute', 'kNNC__leaf_size': 5, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf1,0.9128469980632666,6
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'kd_tree', 'kNNC__leaf_size': 25, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'uniform', 'pca__n_components': 25}",conf2,0.921885087153002,4
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'auto', 'kNNC__leaf_size': 5, 'kNNC__n_neighbors': 10, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf2,0.8779857972885733,4.5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'ball_tree', 'kNNC__leaf_size': 25, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'uniform', 'pca__n_components': 25}",conf2,0.8579728857327308,5.5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'kd_tree', 'kNNC__leaf_size': 75, 'kNNC__n_neighbors': 10, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf2,0.8147191736604261,5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'kd_tree', 'kNNC__leaf_size': 50, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf2,0.9115558424790188,6
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'auto', 'kNNC__leaf_size': 5, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf3,0.9431926372580133,4
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'auto', 'kNNC__leaf_size': 25, 'kNNC__n_neighbors': 5, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf3,0.8965407807045382,4.5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'auto', 'kNNC__leaf_size': 10, 'kNNC__n_neighbors': 10, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf3,0.8771818470326881,5.5
+kNeighborsClassifier,data1,"{'kNNC__algorithm': 'ball_tree', 'kNNC__leaf_size': 50, 'kNNC__n_neighbors': 10, 'kNNC__weights': 'distance', 'pca__n_components': 25}",conf3,0.8673437004125675,5
