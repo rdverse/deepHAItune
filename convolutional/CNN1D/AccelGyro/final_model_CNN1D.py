@@ -229,7 +229,7 @@ tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
 hist = model.fit([Features_TrainA, Features_TrainG],
                  Labels_TrainA,
                  validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-                 epochs=500,
+                 epochs=50000,
                  verbose=3,
                  callbacks=[
                      earlystopping, reduceLRplateau, tensorboard_callback,

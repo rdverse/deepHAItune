@@ -48,7 +48,8 @@ def Make_Dataset(Frame_size,
                  overlap_percent,
                  Accel,
                  Resultant,
-                 heuristic=False):
+                 heuristic=False,
+                 applyFilter=False):
     Features = list()
     Labels = list()
     height_df = pd.read_csv('Cardio_Data/DataCollection.csv')
@@ -94,9 +95,10 @@ def Make_Dataset(Frame_size,
                 feat_z = np.array(
                     df[attriutes[2]][start_index:end_index]).reshape(-1, 1)
 
-                feat_y = filter_butter(feat_y)
-                feat_z = filter_butter(feat_z)
-                feat_x = filter_butter(feat_x)
+                if applyFilter:
+                    feat_y = filter_butter(feat_y)
+                    feat_z = filter_butter(feat_z)
+                    feat_x = filter_butter(feat_x)
 
                 feat_r = np.sqrt(
                     np.square(feat_x) + np.square(feat_y) + np.square(feat_z))
@@ -123,8 +125,7 @@ def Make_Dataset(Frame_size,
                         np.square(feat_x) + np.square(feat_y) +
                         np.square(feat_z)).flatten()
                 else:
-                    Feature = np.array([feat_x, feat_y, feat_z,
-                                        feat_r]).flatten()
+                    Feature = np.array([feat_x, feat_y, feat_z]).flatten()
                 Features.append((Feature))
                 Labels.append(Label)
 
@@ -145,12 +146,13 @@ def Split_Data(Features, Labels):
     return (Features_Train, Features_Test, Labels_Train, Labels_Test)
 
 
-def dataset_main(Frame_size, overlap_percent, Accel, Resultant, heuristic):
+def dataset_main(Frame_size, overlap_percent, Accel, Resultant, heuristic,
+                 applyFilter):
     #Frame_size = int(input(" Enter the Frame Size for the dataset, range(50, 1500) : "))
     #overlap_percent = float(input("Enter the percentage of overlap desired for the dataset range(0,100): "))
 
     Features, Labels = Make_Dataset(Frame_size, overlap_percent, Accel,
-                                    Resultant, heuristic)
+                                    Resultant, heuristic, applyFilter)
     Features = np.array(Features)
 
     Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
