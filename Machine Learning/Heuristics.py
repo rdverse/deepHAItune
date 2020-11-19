@@ -13,13 +13,13 @@ def get_labels():
         'mean',
         'variance',
         'std_dev',
-        # 'kurtosis':
-        # 'skewness':
+        'kurtosis',
+        'skewness',
         'min_val',
         'max_val',
         'perc25',
         'perc75',
-        #'inter_quart_range':
+        'inter_quart_range',
         'auto_corr_seq',
         # Frequency Domain Features
         'freq_1',
