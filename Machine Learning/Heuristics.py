@@ -12,26 +12,26 @@ def get_labels():
     labels = [
         'mean',
         'variance',
-        'std_dev',
+        'standard_deviation',
         'kurtosis',
         'skewness',
-        'min_val',
-        'max_val',
-        'perc25',
-        'perc75',
-        'inter_quart_range',
-        'auto_corr_seq',
+        'minimum_value',
+        'maximum_value',
+        '25 percentile',
+        '75 percentile',
+        'inter_quartile_range',
+        'auto_correlation_sequence',
         # Frequency Domain Features
-        'freq_1',
-        'amp_1',
-        'freq_2',
-        'amp_2',
+        'frequency_1',
+        'amplitude_1',
+        'frequency_2',
+        'amplitude_2',
         'shannon_spectral_entropy',
     ]
 
     finalLabels = list()
 
-    axes = ['x', 'y', 'z']
+    axes = ['x', 'y', 'z', 'r']
     sensors = ['accel', 'gyro']
 
     finalLabels = [[l + '_' + a for l in labels] for a in axes]
