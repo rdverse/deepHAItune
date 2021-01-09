@@ -125,8 +125,7 @@ def Make_Dataset(Frame_size,
                         np.square(feat_x) + np.square(feat_y) +
                         np.square(feat_z)).flatten()
                 else:
-                    Feature = np.array([feat_x, feat_y, feat_z,
-                                        feat_r]).flatten()
+                    Feature = np.array([feat_x, feat_y, feat_z]).flatten()
                 Features.append((Feature))
                 Labels.append(Label)
 
