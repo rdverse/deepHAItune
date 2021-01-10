@@ -1,19 +1,9 @@
-#There are two kinds of data - leave one out and all include
-#this program should return list of features
-# choices - dataset type
-# sensor type
-
-#All person included
-
 import math
 import os
 import re
-
 import pandas as pd
 import numpy as np
-
 from sklearn.model_selection import train_test_split
-
 from StandardScaler import StandardScaler
 
 
@@ -77,66 +67,79 @@ Calculation :   1) instances = (Total Length(1535) - Frame_Length) / (Frame_Leng
 
 
 def Make_Dataset(Frame_size, overlap_percent, Accel):
-    Features = list()
-    Labels = list()
+    Features, Labels, pIDs = list(), list(), list()
 
-    count = 0
-    if Accel == 'Yes':
-        print('Accel')
-        attriutes = ['Accel_LN_X_CAL', 'Accel_LN_Y_CAL', 'Accel_LN_Z_CAL']
-    else:
-        print('Gyro')
-        attriutes = ['Gyro_X_CAL', 'Gyro_Y_CAL', 'Gyro_Z_CAL']
-
-    print('new Data')
+    attributes = get_attributes(Accel)
     PATH = 'Cardio_Data/Cleaned_data'
-    profiles = os.listdir(PATH)
 
-    samplePath = PATH + '/' + profiles[0]
-    samplePath = samplePath + '/' + os.listdir(samplePath)[0]
-    dataLen = len(pd.read_csv(samplePath))
+    dataLen = get_dataLen(PATH)
 
     instances = int(
         math.floor((dataLen - Frame_size) / (Frame_size *
                                              (1 - overlap_percent / 100))))
     print(instances)
 
-    for profile in profiles:
-        speeds = os.listdir(PATH + '/' + profile)
-        speeds = [s for s in speeds if float(s[:-4]) < 7.1]
-        speeds = [s for s in speeds if float(s[:-4]) > 2.9]
+    for root, dirs, files in os.walk(PATH):
 
-        #speeds = [speed for speed in speeds if float(speed[0])<6]
-        for speed in speeds:
+        for file in files:
+
+            #Get label for this speed
+            Label = float(re.sub('\.csv$', '', file))
+
+            if (Label > 7.1 or Label < 2.9):
+                print('skipping this file : {}'.format(Label))
+                continue
+
+            pID = root.split('/')[-1]
+
+            filePath = os.path.join(root, file)
 
             #Read the csv file using pandas
-            df = pd.read_csv(PATH + '/' + profile + '/' + speed)
-            #Get label for this speed
-            Label = float(re.sub('\.csv$', '', speed))
+            df = pd.read_csv(filePath)
 
             start_index = 0
             end_index = Frame_size
-            #instances = 18
+
             for i in range(instances):
 
                 feat_x = np.array(
-                    df[attriutes[0]][start_index:end_index]).reshape(-1, 1)
+                    df[attributes[0]][start_index:end_index]).reshape(-1, 1)
                 feat_y = np.array(
-                    df[attriutes[1]][start_index:end_index]).reshape(-1, 1)
+                    df[attributes[1]][start_index:end_index]).reshape(-1, 1)
                 feat_z = np.array(
-                    df[attriutes[2]][start_index:end_index]).reshape(-1, 1)
+                    df[attributes[2]][start_index:end_index]).reshape(-1, 1)
+
+                Feature = np.array([feat_x, feat_y, feat_z])
 
                 start_index = end_index - int(
                     Frame_size * overlap_percent / 100)
+
                 end_index = start_index + Frame_size
-                # Build array of features
-                # print('Person : {} , Speed : {} , Start_index : {} , End_index : {}'.format(profile, speed[0:3],start_index,end_index))
-                Feature = np.array([feat_x, feat_y, feat_z])
 
                 Features.append((Feature))
                 Labels.append(Label)
+                pIDs.append(pID)
 
-    return Features, Labels
+    return Features, Labels, pIDs
+
+
+def get_dataLen(PATH):
+    profiles = os.listdir(PATH)
+    samplePath = PATH + '/' + profiles[0]
+    samplePath = samplePath + '/' + os.listdir(samplePath)[0]
+    dataLen = len(pd.read_csv(samplePath))
+    return (dataLen)
+
+
+def get_attributes(Accel):
+    if Accel == 'Yes':
+        print('Accel')
+        attributes = ['Accel_LN_X_CAL', 'Accel_LN_Y_CAL', 'Accel_LN_Z_CAL']
+    else:
+        print('Gyro')
+        attributes = ['Gyro_X_CAL', 'Gyro_Y_CAL', 'Gyro_Z_CAL']
+
+    return (attributes)
 
 
 '''
@@ -144,6 +147,7 @@ Train_Test_split for the data ,
 default, test_size = 0.2
 
 '''
+
 # def Split_Data(Features,Labels):
 #     import numpy as np
 #     from sklearn.model_selection import StratifiedKFold
