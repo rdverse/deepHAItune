@@ -7,11 +7,11 @@ from sklearn.model_selection import train_test_split
 from StandardScaler import StandardScaler
 
 
-def dataset_main(Frame_size, overlap_percent, Accel):
+def dataset_main(Frame_size, overlap_percent, Accel, split=False):
     #Frame_size = int(input(" Enter the Frame Size for the dataset, range(50, 1500) : "))
     #overlap_percent = float(input("Enter the percentage of overlap desired for the dataset range(0,100): "))
 
-    Features, Labels = Make_Dataset(Frame_size, overlap_percent, Accel)
+    Features, Labels, pIDs = Make_Dataset(Frame_size, overlap_percent, Accel)
     Features = np.array(Features)
 
     Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
@@ -21,20 +21,24 @@ def dataset_main(Frame_size, overlap_percent, Accel):
     #scaler.fit(Features_Train)
     #Features = scaler.transform(Features)
 
-    Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
-        Features, Labels)
+    if split:
+        Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
+            Features, Labels)
 
-    Labels_Train = np.array(Labels_Train).reshape(len(Labels_Train), 1)
-    print('Train Labels shape   : {}'.format(Labels_Train.shape))
-    Features_Train = np.array(Features_Train)
-    # print(Features_Train[0])
-    print('Train Features shape : {}'.format(Features_Train.shape))
+        Labels_Train = np.array(Labels_Train).reshape(len(Labels_Train), 1)
+        print('Train Labels shape   : {}'.format(Labels_Train.shape))
+        Features_Train = np.array(Features_Train)
+        # print(Features_Train[0])
+        print('Train Features shape : {}'.format(Features_Train.shape))
 
-    Labels_Test = np.array(Labels_Test).reshape(len(Labels_Test), 1)
-    print('Test labels shape    : {}'.format(Labels_Test.shape))
-    Features_Test = np.array(Features_Test)
-    print('Test Features shape  : {}'.format(Features_Test.shape))
-    return Features_Train, Labels_Train, Features_Test, Labels_Test
+        Labels_Test = np.array(Labels_Test).reshape(len(Labels_Test), 1)
+        print('Test labels shape    : {}'.format(Labels_Test.shape))
+        Features_Test = np.array(Features_Test)
+        print('Test Features shape  : {}'.format(Features_Test.shape))
+
+        return Features_Train, Labels_Train, Features_Test, Labels_Test
+    else:
+        return Features, Labels, pIDs
 
 
 ''' 
@@ -80,7 +84,6 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
     print(instances)
 
     for root, dirs, files in os.walk(PATH):
-
         for file in files:
 
             #Get label for this speed
