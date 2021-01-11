@@ -98,7 +98,7 @@ def build_model_CNN():
         metrics=['mae', 'mape', R_Square])
 
     tf.keras.utils.plot_model(model,
-                              to_file='/home/redev/Pictures/Model.png',
+#                              to_file='/home/redev/Pictures/Model.png',
                               show_shapes=True)
     return model
 

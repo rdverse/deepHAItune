@@ -23,7 +23,7 @@ def dataset_main(Frame_size, overlap_percent, Accel):
 
     Features, Labels = Make_Dataset(Frame_size, overlap_percent, Accel)
     Features = np.array(Features)
-
+    Lables = np.array(Labels)
     Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
         Features, Labels)
 
