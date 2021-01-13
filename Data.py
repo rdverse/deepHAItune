@@ -13,32 +13,18 @@ def dataset_main(Frame_size, overlap_percent, Accel, split=False):
 
     Features, Labels, pIDs = Make_Dataset(Frame_size, overlap_percent, Accel)
     Features = np.array(Features)
+    Labels = np.array(Labels).reshape(-1, 1)
+    pIDs = np.array(pIDs)
+    
+    print(Features.shape)
+    print(Labels.shape)
+    print(pIDs.shape)
 
-    Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
-        Features, Labels)
+    print(Features[:2])
+    print(Labels[:3])
+    print(pIDs[:3])
 
-    #scaler = StandardScaler()
-    #scaler.fit(Features_Train)
-    #Features = scaler.transform(Features)
-
-    if split:
-        Features_Train, Features_Test, Labels_Train, Labels_Test = Split_Data(
-            Features, Labels)
-
-        Labels_Train = np.array(Labels_Train).reshape(len(Labels_Train), 1)
-        print('Train Labels shape   : {}'.format(Labels_Train.shape))
-        Features_Train = np.array(Features_Train)
-        # print(Features_Train[0])
-        print('Train Features shape : {}'.format(Features_Train.shape))
-
-        Labels_Test = np.array(Labels_Test).reshape(len(Labels_Test), 1)
-        print('Test labels shape    : {}'.format(Labels_Test.shape))
-        Features_Test = np.array(Features_Test)
-        print('Test Features shape  : {}'.format(Features_Test.shape))
-
-        return Features_Train, Labels_Train, Features_Test, Labels_Test
-    else:
-        return Features, Labels, pIDs
+    return Features, Labels, pIDs
 
 
 ''' 

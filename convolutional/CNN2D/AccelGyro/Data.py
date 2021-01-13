@@ -76,9 +76,18 @@ Calculation :   1) instances = (Total Length(1535) - Frame_Length) / (Frame_Leng
 '''
 
 
+def get_dataLen(PATH):
+    profiles = os.listdir(PATH)
+    samplePath = PATH + '/' + profiles[0]
+    samplePath = samplePath + '/' + os.listdir(samplePath)[0]
+    dataLen = len(pd.read_csv(samplePath))
+    return (dataLen)
+
+
 def Make_Dataset(Frame_size, overlap_percent, Accel):
     Features = list()
     Labels = list()
+    PATH = 'Cardio_Data/Cleaned_data'
 
     count = 0
     if Accel == 'Yes':
@@ -88,11 +97,11 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
         print('Gyro')
         attriutes = ['Gyro_X_CAL', 'Gyro_Y_CAL', 'Gyro_Z_CAL']
 
+    dataLen = get_dataLen(PATH)
     instances = int(
-        math.floor(
-            (1535 - Frame_size) / (Frame_size * (1 - overlap_percent / 100))))
+        math.floor((dataLen - Frame_size) / (Frame_size *
+                                             (1 - overlap_percent / 100))))
     print(instances)
-    PATH = 'Cardio_Data/Cleaned_data'
     profiles = os.listdir(PATH)
 
     for profile in profiles:
