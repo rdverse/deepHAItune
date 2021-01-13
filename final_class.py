@@ -1,17 +1,16 @@
 from tensorflow.keras import layers
 from keras import backend as k
 import IPython
-
 import Data
+import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-
 import model
 from model import build_model_CNN
-
 from plotter import hist_plotter
-
 import os
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 physical_devices = tf.config.list_physical_devices('GPU')
 try:
@@ -33,10 +32,7 @@ def R_Square(y_true, y_pred):
 def build_model_CNN():
     inputA = layers.Input(shape=(3, 150, 1))
     modelA = inputA
-    min_conv1 = 27
-    max_conv1 = 36
-    min_conv2 = 36
-    max_conv2 = 45
+
     modelA = layers.Conv2D(27,
                            kernel_size=(3, 3),
                            padding='same',
@@ -47,7 +43,6 @@ def build_model_CNN():
                            padding='same',
                            activation='relu')(modelA)
 
-    #modelA = layers.Flatten()(modelA)
     modelA = layers.GlobalMaxPool2D()(modelA)
     inputG = layers.Input(shape=(3, 150, 1))
 
@@ -63,61 +58,57 @@ def build_model_CNN():
                            padding='same',
                            activation='relu')(modelG)
 
-    # model = layers.Dropout(0.4)(model)
-    #modelG = layers.Flatten()(modelG)
     modelG = layers.GlobalMaxPool2D()(modelG)
     model = layers.Concatenate()([modelA, modelG])
-    #   layers.concatenate(modelA,modelG)
-
-    #model = layers.Dropout(0.4)(model)
 
     model = layers.Dense(120, activation='relu')(model)
-
     model = layers.Dropout(0.4)(model)
-
     model = layers.Dense(30, activation='relu')(model)
-
     model = layers.Dropout(0.4)(model)
-
-    output = layers.Dense(1)(model)
+    output = layers.Dense(15)(model)
 
     model = tf.keras.Model(inputs=[inputA, inputG], outputs=output)
 
-    optimizer = tf.keras.optimizers.RMSprop(1e-3)
-    # optimizer = tf.keras.optimizers.Adam(1e-3)
+    optimizer = tf.keras.optimizers.Adam(1e-3)
 
-    loss = tf.keras.losses.Huber()
-    loss = tf.keras.losses.LogCosh()
-    loss = tf.keras.losses.MeanAbsolutePercentageError()
-    loss = tf.keras.losses.MeanSquaredError(reduction="auto",
-                                            name="mean_squared_error")
-    loss = tf.keras.losses.MeanAbsoluteError(name="mean_absolute_error")
+    #loss = tf.keras.losses.MeanAbsoluteError(name="mean_absolute_error")
+
+    loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
     model.compile(
         loss=loss,  #'mean_absolute_error',
         optimizer=optimizer,
-        metrics=['mae', 'mape', R_Square])
+        metrics=['accuracy'])
 
-    tf.keras.utils.plot_model(
-        model,
-        #                              to_file='/home/redev/Pictures/Model.png',
-        show_shapes=True)
     return model
 
 
 data_attr = [150, 50]
-Features_TrainA, Labels_TrainA, Features_TestA, Labels_TestA = Data.dataset_main(
-    data_attr[0], data_attr[1], Accel='Yes')
+Features_A, Labels, pIDs = Data.dataset_main(150, 50, Accel='Yes')
+Features_G, Labels, pIDs = Data.dataset_main(150, 50, Accel='No')
 
-Features_TrainG, Labels_TrainG, Features_TestG, Labels_TestG = Data.dataset_main(
-    data_attr[0], data_attr[1], Accel='No')
+pIDsUnique = np.unique(pIDs)
+pIDsUnique
+pIDsInts = np.arange(len(pIDsUnique))
+pIDsDict = dict()
+for i, ID in enumerate(pIDsUnique):
+    pIDsDict[ID] = pIDsInts[i]
 
+pIDsVals = np.array([pIDsDict[ID] for ID in pIDs]).reshape(-1, 1)
+
+oneHot = OneHotEncoder(sparse=False)
+pIDsEnc = oneHot.fit_transform(pIDsVals)
+
+Features_TrainA, Features_TestA, Labels_TrainA, Labels_TestA = train_test_split(
+    Features_A, pIDsVals, shuffle=True, test_size=0.2, random_state=42)
+Features_TrainG, Features_TestG, Labels_TrainG, Labels_TestG = train_test_split(
+    Features_G, pIDsVals, shuffle=True, test_size=0.2, random_state=42)
 Features_TrainA, Features_ValA, Labels_TrainA, Labels_ValA = train_test_split(
     Features_TrainA,
     Labels_TrainA,
     shuffle=True,
     test_size=0.2,
     random_state=42)
-
 Features_TrainG, Features_ValG, Labels_TrainG, Labels_ValG = train_test_split(
     Features_TrainG,
     Labels_TrainG,
@@ -132,7 +123,6 @@ class ClearTrainingOutput(tf.keras.callbacks.Callback):
 
 
 model = build_model_CNN()
-
 earlystopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                  patience=50)
 
@@ -154,14 +144,15 @@ hist = model.fit(
     [Features_TrainA, Features_TrainG],
     Labels_TrainA,
     validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-    epochs=200,
-    verbose=3,
-    callbacks=[
-        earlystopping,
-        #reduceLRplateau,
-        tensorboard_callback,
-        ClearTrainingOutput()
-    ])
+    epochs=300,
+    verbose=3
+    #,
+    #   callbacks=[
+    #        earlystopping,
+    #reduceLRplateau,
+    #       tensorboard_callback
+    #    ]
+)
 
 hist_plotter(hist.history)
 
