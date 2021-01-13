@@ -144,7 +144,7 @@ hist = model.fit(
     [Features_TrainA, Features_TrainG],
     Labels_TrainA,
     validation_data=([Features_ValA, Features_ValG], Labels_ValA),
-    epochs=30,
+    epochs=300,
     verbose=3
     #,
     #   callbacks=[
