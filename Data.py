@@ -15,14 +15,10 @@ def dataset_main(Frame_size, overlap_percent, Accel, split=False):
     Features = np.array(Features)
     Labels = np.array(Labels).reshape(-1, 1)
     pIDs = np.array(pIDs)
-    
+
     print(Features.shape)
     print(Labels.shape)
     print(pIDs.shape)
-
-    print(Features[:2])
-    print(Labels[:3])
-    print(pIDs[:3])
 
     return Features, Labels, pIDs
 
@@ -76,7 +72,6 @@ def Make_Dataset(Frame_size, overlap_percent, Accel):
             Label = float(re.sub('\.csv$', '', file))
 
             if (Label > 7.1 or Label < 2.9):
-                print('skipping this file : {}'.format(Label))
                 continue
 
             pID = root.split('/')[-1]
