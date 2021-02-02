@@ -2,7 +2,7 @@ from MLData import *
 from tqdm import tqdm
 from IPython.display import clear_output
 from scipy.stats import kurtosis, skew, iqr
-from entropy import spectral_entropy
+#from entropy import spectral_entropy
 import pandas as pd
 import numpy as np
 from scipy.signal import find_peaks
@@ -50,44 +50,30 @@ def HeuristicBuilder(feature):
 
     freqs, amps = fft_coeff(feature)
     heuristics = {
-        'mean':
-        np.mean(feature),
-        'variance':
-        np.var(feature),
-        'std_dev':
-        np.std(feature),
-        'kurtosis':
-        kurtosis(feature.flatten()),
-        'skewness':
-        skew(a=feature.flatten()),
-        'min_val':
-        feature.min(),
-        'max_val':
-        feature.max(),
-        'perc25':
-        np.percentile(feature, 25),
-        'perc75':
-        np.percentile(feature, 25),
-        'inter_quart_range':
-        iqr(feature),
-        'auto_corr_seq':
-        _autocorrelation(feature),
+        'mean': np.mean(feature),
+        'variance': np.var(feature),
+        'std_dev': np.std(feature),
+        'kurtosis': kurtosis(feature.flatten()),
+        'skewness': skew(a=feature.flatten()),
+        'min_val': feature.min(),
+        'max_val': feature.max(),
+        'perc25': np.percentile(feature, 25),
+        'perc75': np.percentile(feature, 25),
+        'inter_quart_range': iqr(feature),
+        'auto_corr_seq': _autocorrelation(feature),
 
         # Frequency Domain Features
-        'freq_1':
-        freqs[0],
-        'amp_1':
-        amps[0],
-        'freq_2':
-        freqs[0],
-        'amp_2':
-        amps[1],
-        'shannon_spectral_entropy':
-        spectral_entropy(feature,
-                         sf=50,
-                         method='fft',
-                         nperseg=25,
-                         normalize=True)
+        'freq_1': freqs[0],
+        'amp_1': amps[0],
+        'freq_2': freqs[0],
+        'amp_2': amps[1],
+        #   'shannon_spectral_entropy':
+
+        # spectral_entropy(feature,
+        #                  sf=50,
+        #                  method='fft',
+        #                  nperseg=25,
+        #                  normalize=True)
 
         # Time and Frequency domain features
         #DWT norms
@@ -170,5 +156,5 @@ def fft_coeff(feat):
 
     freqs = [signal1[max_freq_index], signal1[min_freq_index]]
     amps = [signal[max_freq_index], signal[min_freq_index]]
-
+    
     return (freqs, amps)

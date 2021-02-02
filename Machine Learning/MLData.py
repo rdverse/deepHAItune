@@ -4,7 +4,8 @@ from sklearn.model_selection import train_test_split
 import os
 import re
 import math
-from entropy import spectral_entropy
+
+#from entropy import spectral_entropy
 import Heuristics
 from scipy.signal import sosfilt, butter
 
@@ -53,7 +54,6 @@ def Make_Dataset(Frame_size,
     Features = list()
     Labels = list()
     height_df = pd.read_csv('Cardio_Data/DataCollection.csv')
-    count = 0
 
     if Accel.lower() == 'yes':
         print('Accel')

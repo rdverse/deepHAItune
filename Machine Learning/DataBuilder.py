@@ -1,6 +1,7 @@
 from MLData import *
 from tqdm import tqdm
 from IPython.display import clear_output
+import numpy as np
 
 
 class DataBuilder():
